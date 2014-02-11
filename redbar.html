@@ -361,11 +361,25 @@ $( "a" ).each(function( index ) {
   }
 });
 $("a").click(function() {
-	console.log(localStorage.getItem('lastWatched'))
 	if($(this).html()[0]!="<"){
 		$(this).html($(this).html().replace(/--+/,""))
 		localStorage.setItem('lastWatched', $(this).html());
   		$( this ).html("<audio src='http://redbarradio.net/content/shows/RBR-"+$(this).html()+".mp3' controls preload></audio><br>");
+  		$( "audio" ).each(function( index ) {
+  			this.addEventListener("error", function(e) { 
+  				console.log("error occured")
+  				var time = this.currentTime
+          console.log(time)
+  				this.play();
+          var player = this;
+          setTimeout(function(){
+            console.log("hit");
+            console.log(time);
+            console.log($( "audio" )[0])
+            $( "audio" )[0].currentTime=time;
+          },100)
+  			});
+		});
   	}
 });
 </script>
